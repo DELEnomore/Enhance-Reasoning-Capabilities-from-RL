@@ -1,7 +1,7 @@
 from mmengine.config import read_base
 from opencompass.models import HuggingFacewithChatTemplate
 
-from configs.base_config import MODEL_PATH
+from configs.base_config import MODEL_NAME
 
 with read_base():
     from opencompass.configs.datasets.math.math_500_gen import math_datasets
@@ -11,9 +11,9 @@ models = [
     dict(
         type=HuggingFacewithChatTemplate,
         abbr='qwen2.5-1.5b-instruct-hf',
-        path='drive/MyDrive/colab_workspace/models/models--Qwen--Qwen2.5-1.5B-Instruct',
+        path=MODEL_NAME,
         max_out_len=4096,
         batch_size=8,
-        run_cfg=dict(num_gpus=0),
+        run_cfg=dict(num_gpus=1),
     )
 ]
