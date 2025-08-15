@@ -1,8 +1,6 @@
 from mmengine.config import read_base
 from opencompass.models import HuggingFacewithChatTemplate
 
-from configs.base_config import MODEL_NAME
-
 with read_base():
     from opencompass.configs.datasets.math.math_500_gen import math_datasets
 
