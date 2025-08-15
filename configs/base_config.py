@@ -15,6 +15,6 @@ MODEL_OUTPUT_DIR = MODEL_CHECKPOINT_DIR + '/best_model'
 MODEL_PATH = get_model_path()
 
 
-login('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')
+login('')
 # 连接Google Drive。不使用可忽略这一行
 
