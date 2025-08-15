@@ -1,7 +1,7 @@
 
 from huggingface_hub import login
 
-GOOGLE_DRIVE_WORKSPACE_DIR = 'drive/MyDrive/colab_workspace/LLM'
+GOOGLE_DRIVE_WORKSPACE_DIR = './drive/MyDrive/colab_workspace/LLM'
 _CACHE_DIR = GOOGLE_DRIVE_WORKSPACE_DIR + '/cache'
 MODEL_CACHE_DIR = _CACHE_DIR + '/model'
 DATASET_CACHE_DIR = _CACHE_DIR + '/dataset'
