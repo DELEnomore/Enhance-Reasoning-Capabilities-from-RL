@@ -9,8 +9,8 @@ with read_base():
 def get_model_path():
     org_name, model_name = MODEL_NAME.split('/')
     result = MODEL_CACHE_DIR + '/' + f'models--{org_name}--{model_name}'
-    'models--Qwen--Qwen2.5-1.5B-Instruct'
-    return
+
+    return MODEL_CACHE_DIR + '/' + 'models--Qwen--Qwen2.5-1.5B-Instruct'
 
 
 MODEL_PATH = get_model_path()
