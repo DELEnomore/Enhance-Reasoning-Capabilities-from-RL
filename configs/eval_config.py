@@ -11,7 +11,7 @@ models = [
     dict(
         type=HuggingFacewithChatTemplate,
         abbr='qwen2.5-1.5b-instruct-hf',
-        path=MODEL_PATH,
+        path='drive/MyDrive/colab_workspace/models/models--Qwen--Qwen2.5-1.5B-Instruct',
         max_out_len=4096,
         batch_size=8,
         run_cfg=dict(num_gpus=0),
