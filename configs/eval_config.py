@@ -1,9 +1,20 @@
 from mmengine.config import read_base
 from opencompass.models import HuggingFacewithChatTemplate
-from configs.base_config import MODEL_CACHE_DIR, get_model_path, MODEL_PATH
+
+from configs.base_config import MODEL_NAME, MODEL_CACHE_DIR
 
 with read_base():
     from opencompass.configs.datasets.math.math_500_gen import math_datasets
+
+def get_model_path():
+    org_name, model_name = MODEL_NAME.split('/')
+    result = MODEL_CACHE_DIR + '/' + f'models--{org_name}--{model_name}'
+    'models--Qwen--Qwen2.5-1.5B-Instruct'
+    return
+
+
+MODEL_PATH = get_model_path()
+
 
 datasets = math_datasets
 models = [
@@ -13,6 +24,6 @@ models = [
         path=MODEL_PATH,
         max_out_len=4096,
         batch_size=8,
-        run_cfg=dict(num_gpus=1),
+        run_cfg=dict(num_gpus=0),
     )
 ]
