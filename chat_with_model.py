@@ -13,9 +13,8 @@ def format_chatml(input, output):
 
 
 def format_chat_input(input, tokenizer):
-    chatml_input = format_chatml(input, None)
-    formatted_input = tokenizer.apply_chat_template(chatml_input, tokenize=False, add_generation_prompt=True)
-    return formatted_input
+    chatml_input = [{"role": "user", "content": input}]
+    return tokenizer.apply_chat_template(chatml_input, tokenize=False, add_generation_prompt=True)
 
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
@@ -41,5 +40,5 @@ while True:
         print("对话结束。")
         break
     formatted_input = format_chat_input(user_input, tokenizer)
-    response = pipe(formatted_input, truncation=True, max_length=500)
-    print(f"模型: {response[0]['generated_text']}")
+    response = pipe(formatted_input, truncation=True, max_length=1000)
+    print(f"模型: {response[0]}")
