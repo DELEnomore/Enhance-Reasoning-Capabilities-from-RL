@@ -13,7 +13,7 @@ def format_chatml(input, output):
 
 
 def format_chat_input(input, tokenizer):
-    chatml_input = [{"role": "user", "content": input}]
+    chatml_input = [{"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}]
     return tokenizer.apply_chat_template(chatml_input, tokenize=False, add_generation_prompt=True)
 
 
