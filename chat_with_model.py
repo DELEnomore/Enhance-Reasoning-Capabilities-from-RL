@@ -40,5 +40,5 @@ while True:
         print("对话结束。")
         break
     formatted_input = format_chat_input(user_input, tokenizer)
-    response = pipe(formatted_input, truncation=True, max_length=1000)
+    response = pipe(formatted_input, truncation=True, max_length=5000)
     print(f"模型: {response[0]}")
