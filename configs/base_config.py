@@ -1,5 +1,7 @@
 GOOGLE_DRIVE_WORKSPACE_DIR = 'drive/MyDrive/colab_workspace'
-MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+
+# MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
+MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
 MODEL_DOWNLOAD_DIR = f'{GOOGLE_DRIVE_WORKSPACE_DIR}/models/{MODEL_NAME}'
 MODEL_CHECKPOINT_DIR = GOOGLE_DRIVE_WORKSPACE_DIR + '/finetune_models/' + MODEL_NAME
 MODEL_OUTPUT_DIR = MODEL_CHECKPOINT_DIR + '/best_model'
