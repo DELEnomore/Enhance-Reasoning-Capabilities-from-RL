@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 from configs.base_config import MODEL_DOWNLOAD_DIR
-
+import json
 
 def format_chatml(input, output):
     messages = []
@@ -41,4 +41,4 @@ while True:
         break
     formatted_input = format_chat_input(user_input, tokenizer)
     response = pipe(formatted_input, truncation=True, max_length=5000)
-    print(f"模型: {response[0]}")
+    print(f"模型: {json.dumps(response[0])}")
