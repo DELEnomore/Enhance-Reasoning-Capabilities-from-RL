@@ -10,7 +10,8 @@ models = [
         type=HuggingFacewithChatTemplate,
         abbr='qwen2.5-1.5b-instruct-hf',
         path='drive/MyDrive/colab_workspace/models/Qwen/Qwen2.5-1.5B-Instruct',
-        max_out_len=4096,
+        max_seq_len=5000,
+        max_out_len=5000,
         batch_size=8,
         run_cfg=dict(num_gpus=1),
     )
