@@ -5,7 +5,7 @@ from configs.base_config import MODEL_DOWNLOAD_DIR
 import json
 
 def format_chat_input(input, tokenizer):
-    chatml_input = [{"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}]
+    chatml_input = {"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}
     return tokenizer.apply_chat_template(chatml_input, tokenize=True, add_generation_prompt=True)
 
 
