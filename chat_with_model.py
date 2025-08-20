@@ -24,13 +24,6 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)  # 移动模型到设备
 model.eval()
 
-pipe = pipeline(
-    "text-generation",
-    model=model,
-    tokenizer=tokenizer,
-    return_full_text=False,
-)
-
 print("开始对话！输入 'exit' 结束对话。")
 while True:
     user_input = input("用户: ")
@@ -45,10 +38,8 @@ while True:
         formatted_input,
         max_length=2000,                   # 最大生成长度
         num_return_sequences=1,          # 生成1条回复
-        # no_repeat_ngram_size=2,          # 避免重复n-gram
-        # top_k=50,                        # 限制top-k采样
-        # top_p=0.95,                      # 核采样
-        # temperature=0.6,                 # 控制随机性
+        top_p=0.95,                      # 核采样
+        temperature=0.6,                 # 控制随机性
         pad_token_id=tokenizer.eos_token_id  # 防止警告
     )
 
