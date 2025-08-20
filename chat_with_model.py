@@ -36,7 +36,7 @@ while True:
     # 生成回复
     outputs = model.generate(
         formatted_input,
-        max_length=2000,                   # 最大生成长度
+        max_length=5000,                   # 最大生成长度
         num_return_sequences=1,          # 生成1条回复
         top_p=0.95,                      # 核采样
         temperature=0.6,                 # 控制随机性
