@@ -5,8 +5,13 @@ from configs.base_config import MODEL_DOWNLOAD_DIR
 import json
 
 def format_chat_input(input, tokenizer):
-    chatml_input = {"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}
-    return tokenizer.apply_chat_template(chatml_input, tokenize=True, add_generation_prompt=True)
+    chatml_input = [{"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}]
+    return tokenizer.apply_chat_template(
+    chatml_input,                   # 上面的消息列表
+    add_generation_prompt=True, # 在末尾添加助理的起始令牌
+    return_tensors="pt"         # 返回PyTorch张量
+).to(model.device)              # 确保输入张量和模型在同一个设备上（如GPU）
+
 
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
