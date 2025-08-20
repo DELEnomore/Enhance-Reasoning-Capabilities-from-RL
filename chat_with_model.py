@@ -1,3 +1,4 @@
+import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 from configs.base_config import MODEL_DOWNLOAD_DIR
@@ -23,7 +24,8 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
     device_map="auto",  # 自动分配到 GPU
 )
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+model.to(device)  # 移动模型到设备
 model.eval()
 
 pipe = pipeline(
@@ -48,10 +50,10 @@ while True:
         inputs,
         max_length=2000,                   # 最大生成长度
         num_return_sequences=1,          # 生成1条回复
-        no_repeat_ngram_size=2,          # 避免重复n-gram
-        top_k=50,                        # 限制top-k采样
-        top_p=0.95,                      # 核采样
-        temperature=0.6,                 # 控制随机性
+        # no_repeat_ngram_size=2,          # 避免重复n-gram
+        # top_k=50,                        # 限制top-k采样
+        # top_p=0.95,                      # 核采样
+        # temperature=0.6,                 # 控制随机性
         pad_token_id=tokenizer.eos_token_id  # 防止警告
     )
 
