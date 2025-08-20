@@ -35,16 +35,26 @@ pipe = pipeline(
 
 print("开始对话！输入 'exit' 结束对话。")
 while True:
-    user_input = input("你: ")
-    if user_input.lower() == "exit":
+    user_input = input("用户: ")
+    if user_input.lower() == 'exit':
         print("对话结束。")
         break
-    formatted_input = format_chat_input(user_input, tokenizer)
-    response = pipe(
-        formatted_input,
-        truncation=True,
-        max_new_tokens=5000,
-        temperature=0.6,  # 控制多样性
-        top_p=0.95,
+
+    # 编码用户输入
+    inputs = tokenizer.encode(user_input, return_tensors="pt")
+
+    # 生成回复
+    outputs = model.generate(
+        inputs,
+        max_length=2000,                   # 最大生成长度
+        num_return_sequences=1,          # 生成1条回复
+        no_repeat_ngram_size=2,          # 避免重复n-gram
+        top_k=50,                        # 限制top-k采样
+        top_p=0.95,                      # 核采样
+        temperature=0.6,                 # 控制随机性
+        pad_token_id=tokenizer.eos_token_id  # 防止警告
     )
-    print(f"模型: {json.dumps(response[0])}")
+
+    # 解码并输出结果
+    response = tokenizer.decode(outputs[0])
+    print("助手:", json.dumps(response))
