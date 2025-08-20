@@ -4,18 +4,9 @@ from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from configs.base_config import MODEL_DOWNLOAD_DIR
 import json
 
-def format_chatml(input, output):
-    messages = []
-    if input:
-        messages.append({"role": "user", "content": input})
-    if output:
-        messages.append({"role": "assistant", "content": output})
-    return messages
-
-
 def format_chat_input(input, tokenizer):
     chatml_input = [{"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."}]
-    return tokenizer.apply_chat_template(chatml_input, tokenize=False, add_generation_prompt=True)
+    return tokenizer.apply_chat_template(chatml_input, tokenize=True, add_generation_prompt=True)
 
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
@@ -42,12 +33,11 @@ while True:
         print("对话结束。")
         break
 
-    # 编码用户输入
-    inputs = tokenizer.encode(user_input, return_tensors="pt")
+    formatted_input = format_chat_input(user_input, tokenizer)
 
     # 生成回复
     outputs = model.generate(
-        inputs,
+        formatted_input,
         max_length=2000,                   # 最大生成长度
         num_return_sequences=1,          # 生成1条回复
         # no_repeat_ngram_size=2,          # 避免重复n-gram
