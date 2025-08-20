@@ -13,6 +13,7 @@ models = [
         max_seq_len=5000,
         max_out_len=5000,
         batch_size=8,
+        generation_kwargs=dict(top_p=0.95, temperature=0.6, ),
         run_cfg=dict(num_gpus=1),
     )
 ]
