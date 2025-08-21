@@ -1,45 +1,34 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, TrainingArguments
-from trl import PPOTrainer
+import os
 
-from configs.base_config import MODEL_DOWNLOAD_DIR
-from peft import LoraConfig, get_peft_model
+from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR
+from datasets import load_dataset
+from trl import GRPOConfig, GRPOTrainer
 
-tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
-model = AutoModelForCausalLM.from_pretrained(
-    MODEL_DOWNLOAD_DIR,
-    device_map="auto",  # 自动分配到 GPU
-)
+dataset = load_dataset("trl-lib/tldr", split="train")
 
+# TODO reward定义
+def reward():
+    return []
 
-lora_config = LoraConfig(
-    r=16,           # LoRA秩
-    lora_alpha=32,  # Alpha参数（缩放因子）
-    target_modules=["q_proj", "v_proj"],  # 目标模块
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM"
-)
-
-model = get_peft_model(model, lora_config)
-
-
-def reward(texts):
-    pass
-
-training_args = TrainingArguments(
-    output_dir="./grpo_lora_results",
-    per_device_train_batch_size=2,   # 根据GPU显存调整
-    gradient_accumulation_steps=4,   # 梯度累积
-    learning_rate=1.5e-5,            # LoRA的典型学习率
-    max_grad_norm=0.3,               # 梯度裁剪
+training_args = GRPOConfig(
+    output_dir=MODEL_CHECKPOINT_DIR,
     logging_steps=10,
-    report_to="none",                # 禁用默认报告
-    remove_unused_columns=False,     # PPO需要保留所有列
+    save_strategy="steps",
+    save_steps=1000,
 )
 
-ppo_trainer = PPOTrainer(
-    model=model,
-    config=training_args,
-    tokenizer=tokenizer,
-    dataset=dataset,
+# TODO 支持从checkpoint继续训练
+trainer = GRPOTrainer(
+    model="Model",
+    reward_funcs=reward,
+    args=training_args,
+    train_dataset=dataset,
 )
+
+def check_point_exists():
+    if [os.path.join(MODEL_CHECKPOINT_DIR, d) for d in os.listdir(MODEL_CHECKPOINT_DIR) if d.startswith("checkpoint")]:
+        return True
+    return False
+
+trainer.train(check_point_exists())
+trainer.save_model(MODEL_OUTPUT_DIR)
