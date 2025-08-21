@@ -12,6 +12,7 @@ models = [
         abbr='DeepSeek-R1-Distill-Qwen-1.5B',
         path='drive/MyDrive/colab_workspace/download_models/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B',
         max_out_len=16384,
+        max_seq_len=16384,
         batch_size=8,
         generation_kwargs=dict(
             num_return_sequences=4,
