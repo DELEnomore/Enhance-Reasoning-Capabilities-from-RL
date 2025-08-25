@@ -18,7 +18,7 @@ models = [
             top_p=0.95,
             temperature=0.6,
             # TODO 这个不支持>1吗？ acc结果为0
-            num_return_sequences=1,
+            num_return_sequences=2,
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
