@@ -9,14 +9,14 @@ with read_base():
 
 datasets = [
     dict(
-        abbr=f'aime2024-{idx}',
+        abbr=f'aime2025-{idx}',
         type=CustomDataset,
         path='opencompass/aime2025',
         reader_cfg=aime2024_reader_cfg,
         infer_cfg=aime2024_infer_cfg,
         eval_cfg=aime2024_eval_cfg,
     )
-    for idx in range(16)
+    for idx in range(2)
 ]
 models = [
     dict(
