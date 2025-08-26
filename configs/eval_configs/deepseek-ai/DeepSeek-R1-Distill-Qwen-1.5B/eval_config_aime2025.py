@@ -1,6 +1,6 @@
 from mmengine.config import read_base
 
-from opencompass.datasets import CustomDataset, Aime2024Dataset
+from opencompass.datasets import CustomDataset
 from opencompass.models import HuggingFacewithChatTemplate
 from opencompass.utils import extract_non_reasoning_content
 with read_base():
@@ -10,7 +10,7 @@ with read_base():
 datasets = [
     dict(
         abbr=f'aime2024-{idx}',
-        type=Aime2024Dataset,
+        type=CustomDataset,
         path='opencompass/aime2025',
         reader_cfg=aime2024_reader_cfg,
         infer_cfg=aime2024_infer_cfg,
