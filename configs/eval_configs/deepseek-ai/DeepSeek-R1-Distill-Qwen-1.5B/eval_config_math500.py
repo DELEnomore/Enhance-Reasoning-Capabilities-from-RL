@@ -1,10 +1,20 @@
 from mmengine.config import read_base
+from opencompass.datasets import CustomDataset
 from opencompass.models import HuggingFacewithChatTemplate
 from opencompass.utils import extract_non_reasoning_content
 with read_base():
-    from opencompass.configs.datasets.math.math_500_gen import math_datasets
+    from opencompass.configs.datasets.math.math_500_gen import math_datasets, math_reader_cfg, math_infer_cfg, \
+        math_eval_cfg
 
-datasets = math_datasets
+datasets = dict(
+        type=CustomDataset,
+        abbr='math-500',
+        path='opencompass/math',
+        file_name='test_prm800k_500.jsonl',
+        reader_cfg=math_reader_cfg,
+        infer_cfg=math_infer_cfg,
+        eval_cfg=math_eval_cfg,
+    )
 models = [
     dict(
         type=HuggingFacewithChatTemplate,
