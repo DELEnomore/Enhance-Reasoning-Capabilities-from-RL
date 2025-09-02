@@ -14,7 +14,14 @@ from prepare_dataset import get_dataset
 
 dataset = get_dataset()
 
+# TODO测试完删了
+printed = False
+
 def accuracy_reward(completions, solution, **kwargs):
+    global printed
+    if not printed:
+        print(f'completions: {completions}, solution: {solution}')
+        printed = True
     """Reward function that checks if the completion is the same as the ground truth."""
     contents = [completion[0]["content"] for completion in completions]
     rewards = []
