@@ -11,7 +11,7 @@ def batch_format_data(problems, answers):
             'answer': answers}
 
 def get_dataset():
-    data = load_dataset("opencompass/AIME2025", split="test", cache_dir=DATASET_CACHE_DIR)
+    data = load_dataset("opencompass/AIME2025", 'AIME2025-I', split="test", cache_dir=DATASET_CACHE_DIR)
 
     problems = data['question']
     answers = data['answer']
