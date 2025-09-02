@@ -9,20 +9,19 @@ with read_base():
 
 datasets = [
     dict(
-        abbr=f'aime2025-{idx}',
+        abbr=f'aime2025',
         type=CustomDataset,
         path='opencompass/aime2025',
         reader_cfg=aime2024_reader_cfg,
         infer_cfg=aime2024_infer_cfg,
         eval_cfg=aime2024_eval_cfg,
     )
-    for idx in range(2)
 ]
 models = [
     dict(
         type=HuggingFacewithChatTemplate,
         abbr='DeepSeek-R1-Distill-Qwen-1.5B',
-        path='drive/MyDrive/colab_workspace/download_models/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B',
+        path='drive/MyDrive/colab_workspace/download_models/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B/evaluate',
         max_seq_len=6000,
         max_out_len=6000,
         batch_size=8,
@@ -30,8 +29,8 @@ models = [
             do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            # TODO 这个不支持>1吗？ acc结果为0
-            num_return_sequences=2,
+            # TODO 这个不支持>1
+            num_return_sequences=1,
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
