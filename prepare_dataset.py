@@ -3,7 +3,7 @@ from huggingface_hub import login
 
 from configs.base_config import DATASET_CACHE_DIR
 
-login('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')
+# login()
 
 def batch_format_data(data, tokenizer):
     problems = data['question']
