@@ -3,18 +3,20 @@ from huggingface_hub import login
 
 from configs.base_config import DATASET_CACHE_DIR
 
-login()
+login('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')
 
-def batch_format_data(problems, answers):
-    formated_problems = [{"role": "user", "content": input + "\nPlease reason step by step, and put your final answer within \\boxed{}."} for input in problems]
-    return {'prompt': formated_problems,
-            'answer': answers}
-
-def get_dataset():
-    data = load_dataset("opencompass/AIME2025", 'AIME2025-I', split="test", cache_dir=DATASET_CACHE_DIR)
-
+def batch_format_data(data, tokenizer):
     problems = data['question']
     answers = data['answer']
-
-    formated_data = batch_format_data(problems, answers)
+    formated_data = {
+        'prompt':[
+            tokenizer.apply_chat_template(
+                [
+                    {"role": "user", "content": problem + "\nPlease reason step by step, and put your final answer within \\boxed{}."}
+                ], tokenize=False
+            )for problem, answer in zip(problems, answers)
+        ],
+        'answer': answers
+    }
     return formated_data
+

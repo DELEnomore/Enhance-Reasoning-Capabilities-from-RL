@@ -4,28 +4,28 @@ import torch
 from latex2sympy2_extended import NormalizationConfig
 from math_verify import parse, LatexExtractionConfig, verify
 from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForCausalLM
-
-from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_NAME, MODEL_DOWNLOAD_DIR
-from datasets import load_dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_NAME, MODEL_DOWNLOAD_DIR, \
+    DATASET_CACHE_DIR
+from datasets import load_dataset, Dataset
 from trl import GRPOConfig, GRPOTrainer
 
-from prepare_dataset import get_dataset
+from prepare_dataset import batch_format_data
 
-dataset = get_dataset()
+
+
 
 # TODO测试完删了
 printed = False
 
-def accuracy_reward(completions, solution, **kwargs):
+def accuracy_reward(completions, answer, **kwargs):
     global printed
     if not printed:
-        print(f'completions: {completions}, solution: {solution}')
+        print(f'completions: {completions}, solution: {answer}')
         printed = True
     """Reward function that checks if the completion is the same as the ground truth."""
-    contents = [completion[0]["content"] for completion in completions]
     rewards = []
-    for content, sol in zip(contents, solution):
+    for content, sol in zip(completions, answer):
         gold_parsed = parse(
             sol,
             extraction_mode="first_match",
@@ -65,12 +65,24 @@ def accuracy_reward(completions, solution, **kwargs):
 
     return rewards
 
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
+
+# data = load_dataset("opencompass/AIME2025", 'AIME2025-I', split="test", cache_dir=DATASET_CACHE_DIR)
+data = {
+    "question": ["What is 2+2?", "What is 3*5?", "What is 10-4?"],
+    "answer": ["4", "15", "6"]
+}
+dataset = Dataset.from_dict(data)
+
+formated_data = dataset.map(batch_format_data, fn_kwargs={'tokenizer':tokenizer}, batched=True)
+dataset = formated_data
+
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
-    torch_dtype=torch.bfloat16,  # 混合精度
+    # torch_dtype=torch.bfloat16,
     device_map="auto",  # 自动分配到 GPU
-).to("cuda")
+)
 
 lora_config = LoraConfig(
     r=32,
@@ -80,7 +92,7 @@ lora_config = LoraConfig(
     task_type="CAUSAL_LM"
 )
 
-peft_model = get_peft_model(model, lora_config).to("cuda")
+peft_model = get_peft_model(model, lora_config)
 
 training_args = GRPOConfig(
     output_dir=MODEL_CHECKPOINT_DIR,
@@ -88,12 +100,14 @@ training_args = GRPOConfig(
     num_train_epochs=1,
     learning_rate=1.0e-06,
     logging_steps=1,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=2,
+    num_generations=2,
+    max_completion_length=6000,
     save_strategy='steps',
     save_steps=100,
     save_total_limit=100,
     report_to='none',
-    bf16=True,
+    bf16=False,
 )
 
 trainer = GRPOTrainer(
