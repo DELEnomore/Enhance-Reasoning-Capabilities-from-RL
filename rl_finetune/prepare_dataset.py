@@ -22,7 +22,7 @@ def batch_format_data(data, tokenizer):
 
 def get_dataset(tokenizer):
     dataset = load_dataset("open-r1/OpenR1-Math-220k", 'default', split="train", cache_dir=DATASET_CACHE_DIR)
-    dataset.select_columns(['problem', 'answer'])
+    dataset = dataset.select_columns(['problem', 'answer'])
     # 删掉选择题
     filtered_dataset = dataset.filter(lambda x: not x['answer'].isalpha())
     print(f'dataset size: {len(filtered_dataset)}')
