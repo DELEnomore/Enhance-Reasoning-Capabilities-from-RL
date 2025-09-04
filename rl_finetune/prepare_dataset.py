@@ -20,3 +20,7 @@ def batch_format_data(data, tokenizer):
     }
     return formated_data
 
+def get_dataset(tokenizer):
+    dataset = load_dataset("open-r1/OpenR1-Math-220k", 'default', split="train", cache_dir=DATASET_CACHE_DIR)
+    formated_data = dataset.map(batch_format_data, fn_kwargs={'tokenizer': tokenizer}, batched=True)
+    return formated_data
