@@ -4,28 +4,28 @@ import torch
 from latex2sympy2_extended import NormalizationConfig
 from math_verify import parse, LatexExtractionConfig, verify
 from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForCausalLM
-
-from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_NAME, MODEL_DOWNLOAD_DIR
-from datasets import load_dataset
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_NAME, MODEL_DOWNLOAD_DIR, \
+    DATASET_CACHE_DIR
+from datasets import load_dataset, Dataset
 from trl import GRPOConfig, GRPOTrainer
 
-from prepare_dataset import get_dataset
+from prepare_dataset import batch_format_data
 
-dataset = get_dataset()
+
+
 
 # TODO测试完删了
 printed = False
 
-def accuracy_reward(completions, solution, **kwargs):
+def accuracy_reward(completions, answer, **kwargs):
     global printed
     if not printed:
-        print(f'completions: {completions}, solution: {solution}')
+        print(f'completions: {completions}, solution: {answer}')
         printed = True
     """Reward function that checks if the completion is the same as the ground truth."""
-    contents = [completion[0]["content"] for completion in completions]
     rewards = []
-    for content, sol in zip(contents, solution):
+    for content, sol in zip(completions, answer):
         gold_parsed = parse(
             sol,
             extraction_mode="first_match",
@@ -65,6 +65,13 @@ def accuracy_reward(completions, solution, **kwargs):
 
     return rewards
 
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
+
+dataset = load_dataset("open-r1/OpenR1-Math-220k", 'default', split="train", cache_dir=DATASET_CACHE_DIR)
+
+formated_data = dataset.map(batch_format_data, fn_kwargs={'tokenizer':tokenizer}, batched=True)
+dataset = formated_data
+
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
@@ -88,7 +95,8 @@ training_args = GRPOConfig(
     num_train_epochs=1,
     learning_rate=1.0e-06,
     logging_steps=1,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=4,
+    num_generations=4,
     max_completion_length=3584,
     save_strategy='steps',
     save_steps=100,
