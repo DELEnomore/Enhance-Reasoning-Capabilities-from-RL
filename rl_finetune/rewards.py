@@ -46,7 +46,7 @@ def accuracy_reward(completions, answer, **kwargs):
     return rewards
 
 if __name__ == '__main__':
-    sol = r'B'
+    sol = r'$\frac{1+\sqrt{5}}{2}$'
     gold_parsed = parse(
         sol,
         parsing_timeout=None,
