@@ -89,6 +89,7 @@ training_args = GRPOConfig(
     learning_rate=1.0e-06,
     logging_steps=1,
     per_device_train_batch_size=8,
+    max_completion_length=3584,
     save_strategy='steps',
     save_steps=100,
     save_total_limit=100,
