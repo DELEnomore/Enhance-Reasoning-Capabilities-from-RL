@@ -3,10 +3,6 @@ from math_verify import parse, LatexExtractionConfig, verify
 
 
 def accuracy_reward(completions, answer, **kwargs):
-    global printed
-    if not printed:
-        print(f'completions: {completions}, solution: {answer}')
-        printed = True
     """Reward function that checks if the completion is the same as the ground truth."""
     rewards = []
     for content, sol in zip(completions, answer):
