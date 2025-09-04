@@ -1,4 +1,4 @@
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 from huggingface_hub import login
 
 from configs.base_config import DATASET_CACHE_DIR
@@ -22,5 +22,6 @@ def batch_format_data(data, tokenizer):
 
 def get_dataset(tokenizer):
     dataset = load_dataset("open-r1/OpenR1-Math-220k", 'default', split="train", cache_dir=DATASET_CACHE_DIR)
+    dataset.select_columns(['problem', 'answer'])
     formated_data = dataset.map(batch_format_data, fn_kwargs={'tokenizer': tokenizer}, batched=True)
     return formated_data
