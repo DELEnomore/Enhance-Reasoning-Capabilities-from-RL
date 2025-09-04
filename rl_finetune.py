@@ -6,7 +6,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
-from prepare_dataset import get_dataset
+from rl_finetune.prepare_dataset import get_dataset
 from rl_finetune.rewards import accuracy_reward
 
 # TODO测试完删了
