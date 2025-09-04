@@ -21,7 +21,7 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
     torch_dtype=torch.bfloat16,  # 混合精度
     device_map="auto",  # 自动分配到 GPU
-).to("cuda")
+)
 
 lora_config = LoraConfig(
     r=32,
@@ -31,7 +31,7 @@ lora_config = LoraConfig(
     task_type="CAUSAL_LM"
 )
 
-peft_model = get_peft_model(model, lora_config).to("cuda")
+peft_model = get_peft_model(model, lora_config)
 
 training_args = GRPOConfig(
     output_dir=MODEL_CHECKPOINT_DIR,
@@ -46,7 +46,7 @@ training_args = GRPOConfig(
     save_steps=100,
     save_total_limit=100,
     report_to='none',
-    bf16=True,
+    bf16=False,
 )
 
 trainer = GRPOTrainer(
