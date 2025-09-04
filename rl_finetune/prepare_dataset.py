@@ -28,3 +28,6 @@ def get_dataset(tokenizer):
     print(f'dataset size: {len(filtered_dataset)}')
     formated_data = filtered_dataset.map(batch_format_data, fn_kwargs={'tokenizer': tokenizer}, batched=True)
     return formated_data
+
+if __name__ == '__main__':
+    get_dataset(None)
