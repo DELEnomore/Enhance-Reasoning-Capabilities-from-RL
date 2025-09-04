@@ -67,12 +67,7 @@ def accuracy_reward(completions, answer, **kwargs):
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
 
-# data = load_dataset("opencompass/AIME2025", 'AIME2025-I', split="test", cache_dir=DATASET_CACHE_DIR)
-data = {
-    "question": ["What is 2+2?", "What is 3*5?", "What is 10-4?"],
-    "answer": ["4", "15", "6"]
-}
-dataset = Dataset.from_dict(data)
+dataset = load_dataset("open-r1/OpenR1-Math-220k", 'default', split="train", cache_dir=DATASET_CACHE_DIR)
 
 formated_data = dataset.map(batch_format_data, fn_kwargs={'tokenizer':tokenizer}, batched=True)
 dataset = formated_data
@@ -80,9 +75,9 @@ dataset = formated_data
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
-    # torch_dtype=torch.bfloat16,
+    torch_dtype=torch.bfloat16,  # 混合精度
     device_map="auto",  # 自动分配到 GPU
-)
+).to("cuda")
 
 lora_config = LoraConfig(
     r=32,
@@ -92,7 +87,7 @@ lora_config = LoraConfig(
     task_type="CAUSAL_LM"
 )
 
-peft_model = get_peft_model(model, lora_config)
+peft_model = get_peft_model(model, lora_config).to("cuda")
 
 training_args = GRPOConfig(
     output_dir=MODEL_CHECKPOINT_DIR,
@@ -100,14 +95,14 @@ training_args = GRPOConfig(
     num_train_epochs=1,
     learning_rate=1.0e-06,
     logging_steps=1,
-    per_device_train_batch_size=2,
-    num_generations=2,
-    max_completion_length=6000,
+    per_device_train_batch_size=4,
+    num_generations=4,
+    max_completion_length=3584,
     save_strategy='steps',
     save_steps=100,
     save_total_limit=100,
     report_to='none',
-    bf16=False,
+    bf16=True,
 )
 
 trainer = GRPOTrainer(
