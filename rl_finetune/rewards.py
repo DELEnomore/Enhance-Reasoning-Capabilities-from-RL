@@ -16,21 +16,6 @@ def accuracy_reward(completions, answer, **kwargs):
             answer_parsed = parse(
                 content,
                 parsing_timeout=None,
-                extraction_config=[
-                    LatexExtractionConfig(
-                        normalization_config=NormalizationConfig(
-                            basic_latex=True,
-                            units=True,
-                            malformed_operators=False,
-                            nits=False,
-                            boxed="all",
-                            equations=True,
-                        ),
-                        # Ensures that boxed is tried first
-                        boxed_match_priority=0,
-                        try_extract_without_anchor=False,
-                    )
-                ],
                 extraction_mode="first_match",
             )
             # Compute binary rewards if verifiable, `None` otherwise to skip this example
@@ -46,3 +31,13 @@ def accuracy_reward(completions, answer, **kwargs):
         rewards.append(reward)
 
     return rewards
+
+if __name__ == '__main__':
+    string = r'$\frac{1}{2}$'
+    answer_parsed = parse(
+        string,
+        parsing_timeout=None,
+        extraction_mode="first_match",
+
+    )
+    print(answer_parsed)

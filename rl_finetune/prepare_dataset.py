@@ -14,9 +14,9 @@ def batch_format_data(data, tokenizer):
                 [
                     {"role": "user", "content": problem + "\nPlease reason step by step, and put your final answer within \\boxed{}."}
                 ], tokenize=False
-            )for problem, answer in zip(problems, answers)
+            )for problem in problems
         ],
-        'answer': answers
+        'answer': [f'${str(answer)}$' for answer in answers]
     }
     return formated_data
 
