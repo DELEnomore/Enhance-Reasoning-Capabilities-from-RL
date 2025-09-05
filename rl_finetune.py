@@ -46,7 +46,7 @@ training_args = GRPOConfig(
     save_steps=100,
     save_total_limit=100,
     report_to='none',
-    bf16=False,
+    bf16=True,
 )
 
 trainer = GRPOTrainer(
