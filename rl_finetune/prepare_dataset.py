@@ -27,7 +27,7 @@ def get_dataset(tokenizer):
     # 删掉选择题
     filtered_dataset = dataset.filter(lambda x: not x['answer'].isalpha())
     print(f'dataset size: {len(filtered_dataset)}')
-    formated_data = filtered_dataset.map(batch_format_data, fn_kwargs={'tokenizer': tokenizer}, batched=True)
+    formated_data = filtered_dataset.map(batch_format_data, fn_kwargs={'tokenizer': tokenizer}, batched=True, load_from_cache_file=False)
     return formated_data
 
 if __name__ == '__main__':
