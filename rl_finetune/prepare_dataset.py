@@ -18,6 +18,7 @@ def batch_format_data(data, tokenizer):
         ],
         'answer': [f'${str(answer)}$' for answer in answers]
     }
+    print(f'answer example: {formated_data["answer"][0]}')
     return formated_data
 
 def get_dataset(tokenizer):
