@@ -1,17 +1,21 @@
 import os
 
-import torch
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_DOWNLOAD_DIR
+from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
-from train.prepare_dataset import get_dataset
+from train.prepare_dataset import get_rl_data
 from train.rewards import accuracy_reward
+
+
+CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/cold_start'
+
+OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
 
-dataset = get_dataset(tokenizer)
+dataset = get_rl_data(tokenizer)
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
@@ -30,7 +34,7 @@ lora_config = LoraConfig(
 peft_model = get_peft_model(model, lora_config)
 
 training_args = GRPOConfig(
-    output_dir=MODEL_CHECKPOINT_DIR,
+    output_dir=CHECKPOINT_DIR,
     overwrite_output_dir=True,
     num_train_epochs=1,
     learning_rate=1.0e-06,
@@ -53,10 +57,10 @@ trainer = GRPOTrainer(
 )
 
 def check_point_exists():
-    if [os.path.join(MODEL_CHECKPOINT_DIR, d) for d in os.listdir(MODEL_CHECKPOINT_DIR) if d.startswith("checkpoint")]:
+    if [os.path.join(CHECKPOINT_DIR, d) for d in os.listdir(CHECKPOINT_DIR) if d.startswith("checkpoint")]:
         return True
     return False
 
 
 trainer.train(check_point_exists())
-trainer.save_model(MODEL_OUTPUT_DIR)
+trainer.save_model(OUTPUT_DIR)

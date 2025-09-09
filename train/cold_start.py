@@ -11,7 +11,7 @@ CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/cold_start'
 
 OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
-tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
+tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR, repo_type='')
 
 dataset = get_sft_data(tokenizer)
 

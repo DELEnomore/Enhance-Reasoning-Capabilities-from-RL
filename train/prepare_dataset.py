@@ -27,7 +27,7 @@ def batch_format_rl_data(data, tokenizer):
     }
     return formated_data
 
-def format_sft_data(data, tokenizer):
+def batch_format_sft_data(data, tokenizer):
     formated_data = tokenizer.apply_chat_template(data['messages'], tokenize=True)
     return formated_data
 
@@ -46,8 +46,12 @@ def extract_answer_column(example):
 
 def get_sft_data(tokenizer):
     dataset = load_dataset(DATASET_NAME, cache_dir=DATASET_CACHE_DIR)
-    formatted_data = dataset.map(format_sft_data, fn_kwargs={'tokenizer': tokenizer})
+    formatted_data = dataset.map(batch_format_sft_data, fn_kwargs={'tokenizer': tokenizer}, batched=True, load_from_cache_file=False)
     return formatted_data
 
+
+def get_rl_data(tokenizer):
+    return None
+
 if __name__ == '__main__':
-    None
+    get_sft_data(None)
