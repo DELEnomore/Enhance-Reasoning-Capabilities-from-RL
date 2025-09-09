@@ -6,12 +6,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_OUTPUT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
-from rl_finetune.prepare_dataset import get_dataset
-from rl_finetune.rewards import accuracy_reward
-
-# TODO测试完删了
-printed = False
-
+from train.prepare_dataset import get_dataset
+from train.rewards import accuracy_reward
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
 
@@ -19,7 +15,7 @@ dataset = get_dataset(tokenizer)
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
-    torch_dtype=torch.bfloat16,  # 混合精度
+    # torch_dtype=torch.bfloat16,  # 混合精度
     device_map="auto",  # 自动分配到 GPU
 )
 
@@ -46,7 +42,7 @@ training_args = GRPOConfig(
     save_steps=100,
     save_total_limit=100,
     report_to='none',
-    bf16=True,
+    bf16=False,
 )
 
 trainer = GRPOTrainer(

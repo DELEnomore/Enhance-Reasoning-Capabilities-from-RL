@@ -3,7 +3,6 @@ from math_verify import parse, LatexExtractionConfig, verify
 
 
 def accuracy_reward(completions, answer, **kwargs):
-    print(f'answer: {answer}')
     """Reward function that checks if the completion is the same as the ground truth."""
     rewards = []
     for content, sol in zip(completions, answer):
@@ -47,14 +46,14 @@ def accuracy_reward(completions, answer, **kwargs):
     return rewards
 
 if __name__ == '__main__':
-    sol = r'$\frac{1+\sqrt{5}}{2}$'
+    sol = r'20'
     gold_parsed = parse(
         sol,
         parsing_timeout=None,
         extraction_mode="first_match",
     )
     answer_parsed = parse(
-        r'\boxed{b}',
+        r'\boxed{20}',
         parsing_timeout=None,
         extraction_config=[
             LatexExtractionConfig(
@@ -73,4 +72,4 @@ if __name__ == '__main__':
         ],
     )
 
-    print(verify(gold_parsed, answer_parsed))
+    print(verify(gold_parsed, answer_parsed, timeout_seconds=None))
