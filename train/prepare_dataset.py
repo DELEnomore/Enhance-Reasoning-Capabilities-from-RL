@@ -29,7 +29,10 @@ def batch_format_rl_data(data, tokenizer):
 
 def batch_format_sft_data(data, tokenizer):
     formated_data = tokenizer.apply_chat_template(data['messages'], tokenize=True)
-    return formated_data
+    return {
+        'input_ids': formated_data,
+        'labels': formated_data
+    }
 
 def extract_answer_column(example):
     solution = example['solution']
