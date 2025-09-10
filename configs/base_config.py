@@ -1,4 +1,7 @@
-GOOGLE_DRIVE_WORKSPACE_DIR = '../drive/MyDrive/colab_workspace'
+from pathlib import Path
+
+WORK_PATH = Path(__file__).parent.parent.resolve()
+GOOGLE_DRIVE_WORKSPACE_DIR = f'{WORK_PATH}/drive/MyDrive/colab_workspace'
 
 MODEL_NAME = "Qwen/Qwen2.5-1.5B-Instruct"
 # MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
