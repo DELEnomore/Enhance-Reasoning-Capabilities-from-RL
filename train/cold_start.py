@@ -18,7 +18,7 @@ model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
     torch_dtype=torch.bfloat16,  # 混合精度
     device_map="auto",  # 自动分配到 GPU
-)
+).to('cuda')
 
 lora_config = LoraConfig(
     r=8,  # LoRA 的秩
