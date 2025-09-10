@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
-from train.prepare_dataset import get_rl_data
+from train.dataset.numina_math_dataset import get_rl_data
 from train.rewards import accuracy_reward
 
 

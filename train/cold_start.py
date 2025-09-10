@@ -4,8 +4,7 @@ import torch
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
-
-from train.prepare_dataset import get_sft_data
+from train.dataset.numina_math_qwq_dataset import NuminaMathQwQDataset
 
 CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/cold_start'
 
@@ -13,7 +12,7 @@ OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR, repo_type='')
 
-dataset = get_sft_data(tokenizer)
+dataset = NuminaMathQwQDataset(tokenizer).get_data('sft')
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
