@@ -36,7 +36,7 @@ class DatasetInterface:
         output = data[self.SOLUTION_NAME]
 
         formated_data = batch_format_chatml(prompt, output)
-        formated_data = self.tokenizer.apply_chat_template(formated_data, tokenize=True, padding='max_length', max_length=1570)
+        formated_data = self.tokenizer.apply_chat_template(formated_data, tokenize=True)
         return {
             'input_ids': formated_data,
             'labels': formated_data
