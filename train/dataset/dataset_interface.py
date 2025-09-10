@@ -67,7 +67,7 @@ class DatasetInterface:
         if mode == 'sft':
             map_func=self.batch_format_sft_data
         if mode == 'rl':
-            map_func=self.batch_format_rl_data()
+            map_func=self.batch_format_rl_data
         dataset = load_dataset(self.DATASET_NAME, cache_dir=DATASET_CACHE_DIR)
         formatted_data = dataset.map(map_func, fn_kwargs={'self.tokenizer': self.tokenizer},
                                      batched=True, load_from_cache_file=False)
