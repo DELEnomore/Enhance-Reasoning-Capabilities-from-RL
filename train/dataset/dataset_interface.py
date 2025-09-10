@@ -36,7 +36,7 @@ class DatasetInterface:
         output = data[self.SOLUTION_NAME]
 
         formated_data = batch_format_chatml(prompt, output)
-        formated_data = self.tokenizer.apply_chat_template(formated_data, tokenize=True)
+        formated_data = self.tokenizer.apply_chat_template(formated_data, tokenize=True, padding=True)
         return {
             'input_ids': formated_data,
             'labels': formated_data
@@ -70,6 +70,6 @@ class DatasetInterface:
         if mode == 'rl':
             map_func=self.batch_format_rl_data
         dataset = load_dataset(self.DATASET_NAME, split=split, cache_dir=DATASET_CACHE_DIR)
-        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=True)
+        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=False)
         return formatted_data
 
