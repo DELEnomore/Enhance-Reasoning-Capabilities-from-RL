@@ -18,6 +18,6 @@ class NuminaMathQwQDataset(DatasetInterface):
 
 
 if __name__ == '__main__':
-    dataset = load_dataset('BeingIsA/NuminaMath-QwQ-CoT', cache_dir=DATASET_CACHE_DIR)
+    dataset = load_dataset('BeingIsA/NuminaMath-QwQ-CoT', split='train', cache_dir=DATASET_CACHE_DIR)
     dataset = dataset.filter(lambda x:x['correct']==True)
     print('Done')
