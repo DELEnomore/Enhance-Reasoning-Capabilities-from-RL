@@ -12,7 +12,7 @@ OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR, repo_type='')
 
-dataset = NuminaMathQwQDataset(tokenizer).get_data('sft')
+dataset = NuminaMathQwQDataset(tokenizer).get_data('sft', split='train')
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
