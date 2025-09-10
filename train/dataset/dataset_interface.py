@@ -23,7 +23,6 @@ class DatasetInterface:
     PROMPT_SUFFIX = '\nPlease reason step by step, and put your final answer within \\boxed{}.\n'
 
     DATASET_NAME=None
-    SPLIT_NAME=None
 
     QUESTION_NAME=None
     SOLUTION_NAME=None
@@ -58,8 +57,9 @@ class DatasetInterface:
         }
         return formated_data
 
-    def get_data(self, mode):
+    def get_data(self, mode, split=None):
         """
+        :param split:
         :param mode:
             'sft' or 'rl'
         :return:
@@ -69,7 +69,7 @@ class DatasetInterface:
             map_func=self.batch_format_sft_data
         if mode == 'rl':
             map_func=self.batch_format_rl_data
-        dataset = load_dataset(self.DATASET_NAME, split=self.SPLIT_NAME, cache_dir=DATASET_CACHE_DIR)
+        dataset = load_dataset(self.DATASET_NAME, split=split, cache_dir=DATASET_CACHE_DIR)
         formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=True)
         return formatted_data
 

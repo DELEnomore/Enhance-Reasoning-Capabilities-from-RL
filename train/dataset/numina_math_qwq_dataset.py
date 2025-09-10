@@ -13,7 +13,6 @@ from train.dataset.dataset_interface import DatasetInterface, batch_format_chatm
 
 class NuminaMathQwQDataset(DatasetInterface):
     DATASET_NAME = "BeingIsA/NuminaMath-QwQ-CoT"
-    SPLIT_NAME = 'train'
     QUESTION_NAME = 'prompt'
     SOLUTION_NAME = 'response'
 
