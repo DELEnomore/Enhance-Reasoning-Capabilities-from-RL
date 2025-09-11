@@ -39,7 +39,6 @@ class DatasetBase:
         formated_data = self.tokenizer.apply_chat_template(formated_data, tokenize=True)
         return {
             'input_ids': formated_data,
-            'labels': formated_data
         }
 
     def batch_format_rl_data(self, data):
@@ -70,6 +69,6 @@ class DatasetBase:
         if mode == 'rl':
             map_func=self.batch_format_rl_data
         dataset = load_dataset(self.DATASET_NAME, split=split, cache_dir=DATASET_CACHE_DIR)
-        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=True)
+        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=False)
         return formatted_data
 
