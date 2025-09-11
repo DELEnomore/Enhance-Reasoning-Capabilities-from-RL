@@ -2,7 +2,8 @@ import os
 
 import torch
 from peft import LoraConfig, get_peft_model
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, DataCollatorWithPadding
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, DataCollatorWithPadding, \
+    DataCollatorForLanguageModeling
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
 from train.dataset.numina_math_qwq_dataset import NuminaMathQwQDataset
 
@@ -58,7 +59,7 @@ trainer = Trainer(
     args=training_args,
     train_dataset=dataset,
     tokenizer=tokenizer,
-    data_collator=DataCollatorWithPadding(tokenizer=tokenizer)
+    data_collator=DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 )
 
 
