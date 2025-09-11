@@ -5,7 +5,7 @@ from datasets import load_dataset, Dataset
 from huggingface_hub import login
 
 from configs.base_config import DATASET_CACHE_DIR
-from train.dataset.dataset_interface import DatasetInterface
+from train.dataset.dataset_base import DatasetBase
 
 
 # login('')
@@ -22,7 +22,7 @@ def extract_answer_column(example):
     return example
 
 
-class NuminaMathDataset(DatasetInterface):
+class NuminaMathDataset(DatasetBase):
     DATASET_NAME = "BeingIsA/NuminaMath-CoT"
     QUESTION_NAME = 'problem'
     SOLUTION_NAME = 'solution'

@@ -19,7 +19,7 @@ def batch_format_chatml(batch_input, batch_output):
 
     return batch_message
 
-class DatasetInterface:
+class DatasetBase:
     PROMPT_SUFFIX = '\nPlease reason step by step, and put your final answer within \\boxed{}.\n'
 
     DATASET_NAME=None
