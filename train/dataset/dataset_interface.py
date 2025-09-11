@@ -70,6 +70,6 @@ class DatasetInterface:
         if mode == 'rl':
             map_func=self.batch_format_rl_data
         dataset = load_dataset(self.DATASET_NAME, split=split, cache_dir=DATASET_CACHE_DIR)
-        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=False)
+        formatted_data = dataset.map(map_func, batched=True, load_from_cache_file=True)
         return formatted_data
 
