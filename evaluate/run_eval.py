@@ -4,7 +4,7 @@ from configs.base_config import MODEL_NAME, EVAL_OUTPUT_DIR
 
 sys.argv = [
     "main",
-    f"../configs/eval_configs/{MODEL_NAME}/aime2025.py",
+    f"../configs/eval_configs/{MODEL_NAME}/math500.py",
     "--work-dir",
     EVAL_OUTPUT_DIR
 ]
