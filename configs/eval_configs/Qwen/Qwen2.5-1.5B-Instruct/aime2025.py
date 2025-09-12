@@ -35,7 +35,6 @@ models = [
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
-        pred_postprocessor=dict(type=extract_non_reasoning_content),
     )
 ]
 
