@@ -15,7 +15,7 @@ class NuminaMathQwQDataset(DatasetBase):
     DATASET_NAME = "BeingIsA/NuminaMath-QwQ-CoT"
     QUESTION_NAME = 'prompt'
     SOLUTION_NAME = 'response'
-
+    ANSWER_NAME = 'ground_truth'
 
 if __name__ == '__main__':
     dataset = load_dataset('BeingIsA/NuminaMath-QwQ-CoT', split='train', cache_dir=DATASET_CACHE_DIR)
