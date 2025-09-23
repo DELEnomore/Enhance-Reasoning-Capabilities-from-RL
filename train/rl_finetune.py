@@ -7,6 +7,7 @@ from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
 from train.dataset.numina_math_qwq_dataset import NuminaMathQwQDataset
+from train.dataset.open_rs_dataset import OpenRsDataset
 from train.rewards import accuracy_reward
 
 
@@ -16,7 +17,7 @@ OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
 
-dataset = NuminaMathQwQDataset(tokenizer).get_data('rl', split='train')
+dataset = OpenRsDataset(tokenizer).get_data('rl', split='train')
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
