@@ -29,7 +29,6 @@ models = [
             do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            # TODO 这个不支持>1
             num_return_sequences=4,
             repetition_penalty=1.1
           ),

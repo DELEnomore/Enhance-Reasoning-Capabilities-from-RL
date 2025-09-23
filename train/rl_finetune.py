@@ -1,25 +1,26 @@
 import os
 
+import torch
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
 from trl import GRPOConfig, GRPOTrainer
 
-from train.dataset.numina_math_dataset import get_rl_data
+from train.dataset.numina_math_qwq_dataset import NuminaMathQwQDataset
 from train.rewards import accuracy_reward
 
 
-CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/cold_start'
+CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/rl_finetune'
 
 OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR)
 
-dataset = get_rl_data(tokenizer)
+dataset = NuminaMathQwQDataset(tokenizer).get_data('rl', split='train')
 
 model = AutoModelForCausalLM.from_pretrained(
     MODEL_DOWNLOAD_DIR,
-    # torch_dtype=torch.bfloat16,  # 混合精度
+    torch_dtype=torch.bfloat16,  # 混合精度
     device_map="auto",  # 自动分配到 GPU
 )
 
