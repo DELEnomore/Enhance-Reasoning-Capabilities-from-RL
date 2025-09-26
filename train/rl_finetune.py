@@ -64,5 +64,5 @@ def check_point_exists():
     return False
 
 
-trainer.train(check_point_exists())
+trainer.train(resume_from_checkpoint=check_point_exists())
 trainer.save_model(OUTPUT_DIR)
