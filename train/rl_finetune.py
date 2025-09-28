@@ -48,7 +48,9 @@ training_args = GRPOConfig(
     save_steps=200,
     save_total_limit=20,
     report_to='none',
-    bf16=False,
+    bf16=True,
+    use_vllm=True,
+    vllm_mode='colocate',
 )
 
 trainer = GRPOTrainer(
