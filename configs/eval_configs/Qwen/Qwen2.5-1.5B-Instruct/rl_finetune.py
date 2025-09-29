@@ -25,11 +25,11 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
-        model_kwargs=dict(),
         generation_kwargs=dict(
+            do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            n=4,
+            num_return_sequences=4,
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
@@ -43,11 +43,11 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
-        model_kwargs=dict(),
         generation_kwargs=dict(
+            do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            n=4,
+            num_return_sequences=4,
             repetition_penalty=1.1
         ),
         run_cfg=dict(num_gpus=1),
