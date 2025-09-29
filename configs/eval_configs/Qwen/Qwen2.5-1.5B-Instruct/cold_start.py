@@ -26,6 +26,7 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
+        model_kwargs=dict(device_map='auto'),
         generation_kwargs=dict(
             do_sample=True,
             top_p=0.95,
@@ -44,6 +45,7 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
+        model_kwargs=dict(device_map='auto'),
         generation_kwargs=dict(
             do_sample=True,
             top_p=0.95,
@@ -63,6 +65,7 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
+        model_kwargs=dict(device_map='auto'),
         generation_kwargs=dict(
             do_sample=True,
             top_p=0.95,
