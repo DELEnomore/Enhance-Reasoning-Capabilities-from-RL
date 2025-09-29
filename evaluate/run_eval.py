@@ -11,7 +11,5 @@ sys.argv = [
     f"../configs/eval_configs/{MODEL_NAME}/rl_finetune.py",
     "--work-dir",
     EVAL_OUTPUT_DIR,
-    "--accelerator",
-    "vllm"
 ]
 main()
