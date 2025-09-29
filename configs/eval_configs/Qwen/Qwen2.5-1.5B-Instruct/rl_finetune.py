@@ -25,15 +25,14 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
-        model_kwargs=dict(device_map='auto'),
-        generation_kwargs=dict(
+        model_kwargs =dict(
             do_sample=True,
             top_p=0.95,
             temperature=0.6,
             num_return_sequences=4,
             repetition_penalty=1.1
           ),
-        run_cfg=dict(num_gpus=1),
+        run_cfg=dict(num_gpus=0),
     ),
 ] + [
     dict(
@@ -44,8 +43,7 @@ models = [
         max_seq_len=3000,
         max_out_len=3000,
         batch_size=8,
-        model_kwargs=dict(device_map='auto'),
-        generation_kwargs=dict(
+        model_kwargs=dict(
             do_sample=True,
             top_p=0.95,
             temperature=0.6,
@@ -53,7 +51,7 @@ models = [
             num_return_sequences=4,
             repetition_penalty=1.1
         ),
-        run_cfg=dict(num_gpus=1),
+        run_cfg=dict(num_gpus=0),
     ) for x in range(1, 8)
 
 ]
