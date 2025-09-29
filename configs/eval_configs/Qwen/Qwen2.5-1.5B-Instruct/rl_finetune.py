@@ -27,10 +27,9 @@ models = [
         batch_size=8,
         model_kwargs=dict(),
         generation_kwargs=dict(
-            do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            num_return_sequences=4,
+            n=4,
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
@@ -46,11 +45,9 @@ models = [
         batch_size=8,
         model_kwargs=dict(),
         generation_kwargs=dict(
-            do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            # TODO 这个不支持>1
-            num_return_sequences=4,
+            n=4,
             repetition_penalty=1.1
         ),
         run_cfg=dict(num_gpus=1),
