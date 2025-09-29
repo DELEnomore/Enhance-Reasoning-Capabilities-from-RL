@@ -1,9 +1,8 @@
 from mmengine.config import read_base
-
 from opencompass.datasets import CustomDataset
 from opencompass.models import HuggingFacewithChatTemplate
-from opencompass.utils import extract_non_reasoning_content
 with read_base():
+    from opencompass.configs.datasets.math.math_500_gen import math_datasets
     from opencompass.configs.datasets.aime2024.aime2024_gen_17d799 import aime2024_reader_cfg, aime2024_infer_cfg, \
     aime2024_eval_cfg
 
@@ -17,6 +16,8 @@ datasets = [
         eval_cfg=aime2024_eval_cfg,
     )
 ]
+datasets += math_datasets
+
 models = [
     dict(
         type=HuggingFacewithChatTemplate,
@@ -29,7 +30,8 @@ models = [
             do_sample=True,
             top_p=0.95,
             temperature=0.6,
-            num_return_sequences=4,
+            # TODO 这个不支持>1
+            num_return_sequences=2,
             repetition_penalty=1.1
           ),
         run_cfg=dict(num_gpus=1),
@@ -47,7 +49,7 @@ models = [
             top_p=0.95,
             temperature=0.6,
             # TODO 这个不支持>1
-            num_return_sequences=4,
+            num_return_sequences=2,
             repetition_penalty=1.1
         ),
         run_cfg=dict(num_gpus=1),
@@ -66,13 +68,10 @@ models = [
             top_p=0.95,
             temperature=0.6,
             # TODO 这个不支持>1
-            num_return_sequences=4,
+            num_return_sequences=2,
             repetition_penalty=1.1
         ),
         run_cfg=dict(num_gpus=1),
     ) for x in range(1, 5)
 
 ]
-
-
-#pip install -U git+https://github.com/DELEnomore/opencompass.git@main

@@ -8,8 +8,10 @@ os.chdir(current_dir)
 
 sys.argv = [
     "main",
-    f"../configs/eval_configs/{MODEL_NAME}/math500.py",
+    f"../configs/eval_configs/{MODEL_NAME}/rl_finetune.py",
     "--work-dir",
-    EVAL_OUTPUT_DIR
+    EVAL_OUTPUT_DIR,
+    "--accelerator",
+    "vllm"
 ]
 main()
