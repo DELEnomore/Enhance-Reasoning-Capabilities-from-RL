@@ -32,7 +32,7 @@ models = [
             num_return_sequences=4,
             repetition_penalty=1.1
           ),
-        run_cfg=dict(num_gpus=0),
+        run_cfg=dict(num_gpus=1),
     ),
 ] + [
     dict(
@@ -51,7 +51,7 @@ models = [
             num_return_sequences=4,
             repetition_penalty=1.1
         ),
-        run_cfg=dict(num_gpus=0),
+        run_cfg=dict(num_gpus=1),
     ) for x in range(1, 8)
 
 ]
