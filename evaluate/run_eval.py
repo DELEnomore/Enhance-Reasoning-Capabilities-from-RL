@@ -11,11 +11,11 @@ from lighteval.utils.imports import is_package_available
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MODEL_NAME
+from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MODEL_NAME, EVAL_OUTPUT_DIR
 
 time = int(datetime.now().strftime("%Y%m%d%H%M%S"))
 temp_model_path = '/.temp_model'
-
+os.mkdir(temp_model_path)
 
 def get_checkpoint_dirs(path="."):
     """
@@ -44,7 +44,7 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
         model_path = temp_model_path
 
     evaluation_tracker = EvaluationTracker(
-        output_dir=f'/result/{model_name}-{time}',
+        output_dir=f'{EVAL_OUTPUT_DIR}/{model_name}-{time}',
         save_details=True,
         push_to_hub=False,
     )
