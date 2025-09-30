@@ -4,12 +4,12 @@ import torch
 from peft import LoraConfig, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, DataCollatorWithPadding, \
     DataCollatorForLanguageModeling
-from configs.base_config import MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR
+from configs.base_config import RL_MODEL_CHECKPOINT_DIR, MODEL_DOWNLOAD_DIR, COLD_START_MODEL_CHECKPOINT_DIR
 from train.dataset.numina_math_qwq_dataset import NuminaMathQwQDataset
+from train.dataset.open_rs_dataset import OpenRsDataset
 
-CHECKPOINT_DIR = f'{MODEL_CHECKPOINT_DIR}/cold_start'
 
-OUTPUT_DIR = CHECKPOINT_DIR + '/best_model'
+OUTPUT_DIR = COLD_START_MODEL_CHECKPOINT_DIR + '/best_model'
 
 tokenizer = AutoTokenizer.from_pretrained(pretrained_model_name_or_path=MODEL_DOWNLOAD_DIR, repo_type='')
 
@@ -35,12 +35,12 @@ peft_model = get_peft_model(model, lora_config).to("cuda")
 peft_model.print_trainable_parameters()  # 查看可训练参数量
 
 def check_point_exists():
-    if [os.path.join(CHECKPOINT_DIR, d) for d in os.listdir(CHECKPOINT_DIR) if d.startswith("checkpoint")]:
+    if [os.path.join(COLD_START_MODEL_CHECKPOINT_DIR, d) for d in os.listdir(COLD_START_MODEL_CHECKPOINT_DIR) if d.startswith("checkpoint")]:
         return True
     return False
 
 training_args = TrainingArguments(
-    output_dir=CHECKPOINT_DIR,
+    output_dir=COLD_START_MODEL_CHECKPOINT_DIR,
     overwrite_output_dir=True,
     per_device_train_batch_size=8,
     gradient_accumulation_steps=8,
