@@ -14,7 +14,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MODEL_NAME
 
 time = int(datetime.now().strftime("%Y%m%d%H%M%S"))
-temp_model_path = 'temp_model'
+temp_model_path = '/.temp_model'
 
 
 def get_checkpoint_dirs(path="."):
@@ -64,7 +64,7 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
     )
 
     model_config = VLLMModelConfig(
-        model_name=temp_model_path,
+        model_name=model_path,
         generation_parameters=generation_params
     )
 
