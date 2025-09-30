@@ -47,7 +47,8 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
             model_path = temp_dir
 
         evaluation_tracker = EvaluationTracker(
-            output_dir=f'{time}/{EVAL_OUTPUT_DIR}/{model_name}',
+            output_dir=f'/{EVAL_OUTPUT_DIR}/{time}/{model_name}',
+            results_path_template="{output_dir}/custom/{org}_{model}",
             save_details=True,
             push_to_hub=False,
         )
