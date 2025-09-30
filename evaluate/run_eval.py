@@ -72,7 +72,8 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
         )
 
         pipeline = Pipeline(
-            tasks="lighteval|aime24|0,lighteval|aime25|0",
+            # tasks="lighteval|aime24|0,lighteval|aime25|0, lighteval|math_500|0",
+            tasks='lighteval|aime24|0',
             pipeline_parameters=pipeline_params,
             evaluation_tracker=evaluation_tracker,
             model_config=model_config,
