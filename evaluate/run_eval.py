@@ -74,7 +74,7 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
 
         pipeline = Pipeline(
             # tasks="lighteval|aime24|0,lighteval|aime25|0, lighteval|math_500|0",
-            tasks='lighteval|aime24@n=4|0',
+            tasks='lighteval|aime24@n=4|0,lighteval|aime25@n=4|0,lighteval|math_500@n=4|0',
             pipeline_parameters=pipeline_params,
             evaluation_tracker=evaluation_tracker,
             model_config=model_config,
@@ -87,6 +87,6 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
 
 if __name__ == "__main__":
     main(MODEL_DOWNLOAD_DIR, None, MODEL_NAME)
-    # checkpoints = get_checkpoint_dirs(RL_MODEL_CHECKPOINT_DIR)
-    # for checkpoint in checkpoints:
-    #     main(MODEL_DOWNLOAD_DIR, os.path.join(RL_MODEL_CHECKPOINT_DIR, checkpoint), f'MODEL_NAME-{checkpoint}')
+    checkpoints = get_checkpoint_dirs(RL_MODEL_CHECKPOINT_DIR)
+    for checkpoint in checkpoints:
+        main(MODEL_DOWNLOAD_DIR, os.path.join(RL_MODEL_CHECKPOINT_DIR, checkpoint), f'MODEL_NAME-{checkpoint}')
