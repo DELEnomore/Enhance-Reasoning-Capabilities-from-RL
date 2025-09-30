@@ -16,7 +16,7 @@ from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MOD
 
 time = int(datetime.now().strftime("%Y%m%d%H%M%S"))
 temp_model_path = f'{GOOGLE_DRIVE_WORKSPACE_DIR}/temp_model'
-os.mkdir(temp_model_path)
+
 
 def get_checkpoint_dirs(path="."):
     """
@@ -40,6 +40,8 @@ def merge_lora_model(model_path, lora_path):
     tokenizer.save_pretrained(temp_model_path)
 
 def main(model_path, lora_path, model_name=MODEL_NAME):
+    os.mkdir(temp_model_path)
+
     if lora_path:
         merge_lora_model(model_path, lora_path)
         model_path = temp_model_path
@@ -79,6 +81,7 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
     pipeline.evaluate()
     pipeline.save_and_push_results()
     pipeline.show_results()
+
     os.remove(temp_model_path)
 
 if __name__ == "__main__":
