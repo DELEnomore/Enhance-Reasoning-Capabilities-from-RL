@@ -61,7 +61,7 @@ def main(model_path, lora_path, model_name=MODEL_NAME):
         )
 
         generation_params = GenerationParameters(
-            max_new_tokens=3,
+            max_new_tokens=5000,
             top_p=0.95,
             temperature=0.6,
             repetition_penalty=1.1,
