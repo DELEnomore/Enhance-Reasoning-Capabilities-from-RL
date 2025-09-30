@@ -11,10 +11,11 @@ from lighteval.utils.imports import is_package_available
 from peft import PeftModel
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
-from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MODEL_NAME, EVAL_OUTPUT_DIR
+from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MODEL_NAME, EVAL_OUTPUT_DIR, \
+    GOOGLE_DRIVE_WORKSPACE_DIR
 
 time = int(datetime.now().strftime("%Y%m%d%H%M%S"))
-temp_model_path = '/.temp_model'
+temp_model_path = f'{GOOGLE_DRIVE_WORKSPACE_DIR}/temp_model'
 os.mkdir(temp_model_path)
 
 def get_checkpoint_dirs(path="."):
