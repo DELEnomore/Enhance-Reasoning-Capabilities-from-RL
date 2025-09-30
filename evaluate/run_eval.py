@@ -1,3 +1,4 @@
+import tempfile
 from datetime import datetime
 import os
 
@@ -15,7 +16,6 @@ from configs.base_config import MODEL_DOWNLOAD_DIR, RL_MODEL_CHECKPOINT_DIR, MOD
     GOOGLE_DRIVE_WORKSPACE_DIR
 
 time = int(datetime.now().strftime("%Y%m%d%H%M%S"))
-temp_model_path = f'{GOOGLE_DRIVE_WORKSPACE_DIR}/temp_model'
 
 
 def get_checkpoint_dirs(path="."):
@@ -31,58 +31,57 @@ def get_checkpoint_dirs(path="."):
 
     return checkpoint_dirs
 
-def merge_lora_model(model_path, lora_path):
+def merge_lora_model(model_path, lora_path, merged_model_path):
     model = AutoModelForCausalLM.from_pretrained(model_path)
     model = PeftModel.from_pretrained(model, lora_path)
     merged_model = model.merge_and_unload()
-    merged_model.save_pretrained(temp_model_path)
+    merged_model.save_pretrained(merged_model_path)
     tokenizer = AutoTokenizer.from_pretrained(model_path)
-    tokenizer.save_pretrained(temp_model_path)
+    tokenizer.save_pretrained(merged_model_path)
 
 def main(model_path, lora_path, model_name=MODEL_NAME):
-    os.mkdir(temp_model_path)
+    with tempfile.TemporaryDirectory() as temp_dir:
 
-    if lora_path:
-        merge_lora_model(model_path, lora_path)
-        model_path = temp_model_path
+        if lora_path:
+            merge_lora_model(model_path, lora_path, temp_dir)
+            model_path = temp_dir
 
-    evaluation_tracker = EvaluationTracker(
-        output_dir=f'{EVAL_OUTPUT_DIR}/{model_name}-{time}',
-        save_details=True,
-        push_to_hub=False,
-    )
+        evaluation_tracker = EvaluationTracker(
+            output_dir=f'{EVAL_OUTPUT_DIR}/{model_name}-{time}',
+            save_details=True,
+            push_to_hub=False,
+        )
 
-    pipeline_params = PipelineParameters(
-        launcher_type=ParallelismManager.ACCELERATE,
-        custom_tasks_directory=None,  # Set to path if using custom tasks
-        # Remove the parameter below once your configuration is tested
-        max_samples=10
-    )
+        pipeline_params = PipelineParameters(
+            launcher_type=ParallelismManager.ACCELERATE,
+            custom_tasks_directory=None,  # Set to path if using custom tasks
+            # Remove the parameter below once your configuration is tested
+            max_samples=10
+        )
 
-    generation_params = GenerationParameters(
-        max_new_tokens=3,
-        top_p=0.95,
-        temperature=0.6,
-        repetition_penalty=1.1,
-    )
+        generation_params = GenerationParameters(
+            max_new_tokens=3,
+            top_p=0.95,
+            temperature=0.6,
+            repetition_penalty=1.1,
+        )
 
-    model_config = VLLMModelConfig(
-        model_name=model_path,
-        generation_parameters=generation_params
-    )
+        model_config = VLLMModelConfig(
+            model_name=model_path,
+            generation_parameters=generation_params
+        )
 
-    pipeline = Pipeline(
-        tasks="lighteval|aime24|0,lighteval|aime25|0",
-        pipeline_parameters=pipeline_params,
-        evaluation_tracker=evaluation_tracker,
-        model_config=model_config,
-    )
+        pipeline = Pipeline(
+            tasks="lighteval|aime24|0,lighteval|aime25|0",
+            pipeline_parameters=pipeline_params,
+            evaluation_tracker=evaluation_tracker,
+            model_config=model_config,
+        )
 
-    pipeline.evaluate()
-    pipeline.save_and_push_results()
-    pipeline.show_results()
+        pipeline.evaluate()
+        pipeline.save_and_push_results()
+        pipeline.show_results()
 
-    os.remove(temp_model_path)
 
 if __name__ == "__main__":
     main(MODEL_DOWNLOAD_DIR, None, MODEL_NAME)
